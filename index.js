@@ -43,12 +43,12 @@ wss.on('connection', (ws, req) => {
           });
         });
 
-        peers.add(ws);
-
         send(ws, {
           type: 'joined',
-          peerCount: peers.size - 1,
+          peerCount: peers.size,
         });
+
+        peers.add(ws);
 
         console.log(ws.userId + ' joined ' + ws.roomId);
 
@@ -58,6 +58,7 @@ wss.on('connection', (ws, req) => {
       case 'answer':
       case 'candidate':
       case 'hangup':
+      case 'camera-state': // 👈 added
         const room = rooms.get(ws.roomId);
 
         if (!room) return;
